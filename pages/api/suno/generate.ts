@@ -6,7 +6,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { prompt, style, duration, mode, title } = req.body
+    const { prompt, style, duration, mode, title, make_instrumental } = req.body
 
     // 验证必需的字段
     if (!prompt) {
@@ -20,7 +20,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       style,
       duration,
       mode,
-      title
+      title,
+      make_instrumental
     })
 
     // 获取SUNO API配置 - 这些需要在.env.local中配置
@@ -62,7 +63,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       mode: mode || 'inspiration',
       title: title || '',
       // SUNO API 特有参数
-      make_instrumental: false,
+      make_instrumental: make_instrumental || false,
       wait_audio: false,
       model_version: 'v3.5',
       output_format: 'mp3'

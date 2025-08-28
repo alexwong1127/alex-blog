@@ -32,6 +32,7 @@ export interface GenerationParams {
   style?: MusicStyle;
   duration?: number;
   title?: string;
+  make_instrumental?: boolean; // 是否生成纯音乐（灵感模式专用）
 }
 
 // 本地存储键名

@@ -36,6 +36,7 @@ export default function MusicGenerator({ onGenerate, isGenerating }: MusicGenera
   const [prompt, setPrompt] = useState('')
   const [selectedStyle, setSelectedStyle] = useState<MusicStyle>()
   const [duration, setDuration] = useState(120)
+  const [makeInstrumental, setMakeInstrumental] = useState(false)
 
   const handleGenerate = () => {
     if (!prompt.trim()) return
@@ -44,7 +45,8 @@ export default function MusicGenerator({ onGenerate, isGenerating }: MusicGenera
       mode: selectedMode,
       prompt: prompt.trim(),
       style: selectedStyle,
-      duration
+      duration,
+      make_instrumental: selectedMode === 'inspiration' ? makeInstrumental : undefined
     }
 
     onGenerate(params)
@@ -133,6 +135,29 @@ export default function MusicGenerator({ onGenerate, isGenerating }: MusicGenera
             ))}
           </div>
         </div>
+
+        {/* Instrumental option for inspiration mode */}
+        {selectedMode === 'inspiration' && (
+          <div className="instrumental-option">
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={makeInstrumental}
+                onChange={(e) => setMakeInstrumental(e.target.checked)}
+                className="checkbox"
+              />
+              <span className="checkbox-text">
+                🎼 生成纯音乐（无歌词）
+              </span>
+            </label>
+            <p className="option-description">
+              {makeInstrumental ? 
+                '将生成不含歌词的纯音乐作品，适合背景音乐或器乐欣赏' : 
+                '将生成包含歌词的完整歌曲，适合完整音乐体验'
+              }
+            </p>
+          </div>
+        )}
 
         {/* Style and Duration (for custom mode) */}
         {selectedMode === 'custom' && (
@@ -346,6 +371,42 @@ export default function MusicGenerator({ onGenerate, isGenerating }: MusicGenera
         .quick-prompt-btn:hover {
           background: rgba(255, 255, 255, 0.1);
           color: white;
+        }
+
+        .instrumental-option {
+          margin-bottom: 1.5rem;
+          padding: 1rem;
+          background: rgba(139, 92, 246, 0.1);
+          border: 1px solid rgba(139, 92, 246, 0.3);
+          border-radius: 12px;
+        }
+
+        .checkbox-label {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          cursor: pointer;
+          margin-bottom: 0.5rem;
+        }
+
+        .checkbox {
+          width: 18px;
+          height: 18px;
+          accent-color: #8b5cf6;
+          cursor: pointer;
+        }
+
+        .checkbox-text {
+          font-size: 1rem;
+          font-weight: 500;
+          color: white;
+        }
+
+        .option-description {
+          font-size: 0.85rem;
+          color: rgba(255, 255, 255, 0.7);
+          line-height: 1.4;
+          margin-left: 2.25rem;
         }
 
         .custom-options {
