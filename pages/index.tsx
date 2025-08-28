@@ -5,7 +5,6 @@ import MusicLibrary from '@/components/MusicLibrary'
 import PasswordLogin from '@/components/PasswordLogin'
 import { MusicTrack, GenerationParams } from '@/types'
 import { getAllTracks, addTrack, updateTrack, generateId, generateMusic, checkMusicStatus } from '@/lib/storage'
-import Link from 'next/link'
 
 export default function Home() {
   const [tracks, setTracks] = useState<MusicTrack[]>([])
@@ -29,13 +28,6 @@ export default function Home() {
   const handleAuthSuccess = () => {
     setIsAuthenticated(true)
     setTracks(getAllTracks()) // 登录成功后加载数据
-  }
-
-  // 处理退出登录
-  const handleLogout = () => {
-    localStorage.removeItem('suno_auth')
-    setIsAuthenticated(false)
-    setTracks([])
   }
 
   // 如果还在检查认证状态，显示加载画面
@@ -208,20 +200,27 @@ export default function Home() {
         {/* Hero Section */}
         <section className="hero">
           <div className="container">
-            <h1 className="hero-title">Alex的个人博客</h1>
+            <h1 className="hero-title">SUNO AI音乐生成</h1>
             <p className="hero-subtitle">
-              欢迎来到我的数字花园 🌱 分享技术、生活与思考
+              使用先进的AI技术创作专属音乐 🎵 支持灵感模式、定制模式等多种创作方式
             </p>
-            <div className="hero-actions">
-              <Link href="/suno" className="btn btn-primary">
-                🎵 SUNO音乐生成
-              </Link>
-              <button
-                className="btn btn-secondary"
-                onClick={() => setCurrentView(currentView === 'generator' ? 'library' : 'generator')}
-              >
-                {currentView === 'generator' ? '📚 查看音乐库' : '🎵 音乐生成'}
-              </button>
+            <div className="hero-features">
+              <div className="hero-feature">
+                <span className="feature-icon">🎨</span>
+                <span>AI智能创作</span>
+              </div>
+              <div className="hero-feature">
+                <span className="feature-icon">🎵</span>
+                <span>多种音乐风格</span>
+              </div>
+              <div className="hero-feature">
+                <span className="feature-icon">⚡</span>
+                <span>快速生成</span>
+              </div>
+              <div className="hero-feature">
+                <span className="feature-icon">📱</span>
+                <span>在线播放</span>
+              </div>
             </div>
           </div>
         </section>
@@ -242,16 +241,6 @@ export default function Home() {
             {tracks.length > 0 && (
               <span className="badge">{tracks.length}</span>
             )}
-          </button>
-          <Link href="/suno" className="nav-tab">
-            ✨ SUNO专业版
-          </Link>
-          <button
-            className="nav-tab logout-btn"
-            onClick={handleLogout}
-            title="退出登录"
-          >
-            🚪 退出
           </button>
         </nav>
 
@@ -298,11 +287,29 @@ export default function Home() {
           margin-right: auto;
         }
 
-        .hero-actions {
+        .hero-features {
           display: flex;
-          gap: 1rem;
+          gap: 2rem;
           justify-content: center;
           flex-wrap: wrap;
+          margin-top: 2rem;
+        }
+        
+        .hero-feature {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.75rem 1.5rem;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 12px;
+          backdrop-filter: blur(10px);
+          color: rgba(255, 255, 255, 0.9);
+          font-weight: 500;
+        }
+        
+        .feature-icon {
+          font-size: 1.2rem;
         }
 
         .nav-tabs {
@@ -334,17 +341,6 @@ export default function Home() {
           text-decoration: none;
         }
 
-        .nav-tab.logout-btn {
-          background: rgba(239, 68, 68, 0.1);
-          color: #ef4444;
-          border-left: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .nav-tab.logout-btn:hover {
-          background: rgba(239, 68, 68, 0.2);
-          color: white;
-        }
-        
         .nav-tab:hover {
           color: white;
           background: rgba(255, 255, 255, 0.05);
@@ -380,9 +376,13 @@ export default function Home() {
             font-size: 1rem;
           }
           
-          .hero-actions {
-            flex-direction: column;
-            align-items: center;
+          .hero-features {
+            gap: 1rem;
+          }
+          
+          .hero-feature {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
           }
           
           .nav-tab {
