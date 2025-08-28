@@ -55,9 +55,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       })
     }
 
+    // 增强纯音乐生成的prompt处理
+    let enhancedPrompt = prompt
+    if (make_instrumental) {
+      enhancedPrompt = `${prompt} [instrumental only, no vocals, no lyrics, pure music]`
+    }
+
     // 构建SUNO API请求体
     const requestBody = {
-      prompt: prompt,
+      prompt: enhancedPrompt,
       style: style || 'pop',
       duration: duration || 120,
       mode: mode || 'inspiration',
@@ -73,7 +79,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       url: sunoApiUrl,
       prompt: requestBody.prompt.substring(0, 50) + '...',
       style: requestBody.style,
-      duration: requestBody.duration
+      duration: requestBody.duration,
+      make_instrumental: requestBody.make_instrumental
     })
 
     // 调用SUNO API
