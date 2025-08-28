@@ -1,119 +1,165 @@
-# Alex's Blog
+# Alex的个人博客 - 集成SUNO AI音乐生成
 
-一个使用 Next.js 构建的个人博客网站。
+这是一个基于Next.js的个人博客网站，集成了完整的SUNO AI音乐生成功能。
 
-## 功能特性
+## ✨ 功能特性
 
-- 📝 支持 Markdown 格式的博客文章
-- 🏷️ 文章标签和分类系统
-- 📱 响应式设计，支持移动端
-- 🔍 文章归档功能
-- ⚡ 静态站点生成，快速加载
-- 🎨 简洁现代的设计风格
+### 🎵 SUNO AI音乐生成
+- **三种创作模式**：
+  - 灵感模式：描述音乐风格，AI自动创作歌词和旋律
+  - 定制模式：提供完整歌词，控制音乐风格和结构
+  - 续写模式：在现有音乐基础上继续创作
+- **专业品质**：商用级音质，支持多种音乐风格
+- **实时状态追踪**：生成进度实时更新
+- **音乐库管理**：保存和管理创作的音乐作品
+- **音频下载**：支持下载生成的音乐文件
 
-## 技术栈
+### 📱 用户界面
+- 响应式设计，支持移动端和桌面端
+- 现代化的玻璃质感UI
+- 暗色主题，护眼舒适
+- 流畅的动画效果
 
-- **框架**: Next.js 14
-- **语言**: TypeScript
-- **样式**: CSS-in-JS + CSS Modules
-- **内容**: Markdown + Gray Matter
-- **部署**: Vercel (推荐)
-
-## 项目结构
-
-```
-blog/
-├── components/          # React 组件
-│   ├── Layout.tsx      # 页面布局
-│   └── PostCard.tsx    # 文章卡片
-├── lib/                # 工具函数
-│   └── posts.ts        # 文章处理逻辑
-├── pages/              # 页面文件
-│   ├── index.tsx       # 首页
-│   ├── about.tsx       # 关于页面
-│   ├── archive.tsx     # 归档页面
-│   └── posts/
-│       └── [id].tsx    # 文章详情页
-├── posts/              # Markdown 文章
-├── styles/             # 全局样式
-└── public/             # 静态资源
-```
-
-## 快速开始
+## 🚀 快速开始
 
 ### 1. 安装依赖
 
 ```bash
 npm install
+# 或
+yarn install
+# 或
+pnpm install
 ```
 
-### 2. 启动开发服务器
+### 2. 配置环境变量
+
+复制环境变量示例文件：
+
+```bash
+cp .env.local.example .env.local
+```
+
+编辑 `.env.local` 文件，添加您的SUNO API密钥：
+
+```env
+SUNO_API_KEY=your_actual_suno_api_key_here
+```
+
+### 3. 启动开发服务器
 
 ```bash
 npm run dev
+# 或
+yarn dev
+# 或
+pnpm dev
 ```
 
 访问 [http://localhost:3000](http://localhost:3000) 查看网站。
 
-### 3. 添加新文章
+## 📁 项目结构
 
-在 `posts/` 目录下创建新的 `.md` 文件：
+```
+alex-blog/
+├── pages/              # 页面文件
+│   ├── api/           # API路由
+│   │   └── suno/      # SUNO音乐生成API
+│   ├── index.tsx      # 首页
+│   └── suno.tsx       # SUNO专业版页面
+├── components/        # 组件
+├── lib/              # 工具库
+│   └── database.ts   # 数据库操作
+├── styles/           # 样式文件
+├── types/            # 类型定义
+└── public/           # 静态资源
+```
 
-```markdown
+## 🎵 SUNO功能使用指南
+
+### 灵感模式
+适合有大致想法但没有具体歌词的创作：
+1. 描述音乐风格、语言、主题
+2. AI会自动创作歌词和旋律
+3. 示例：`欢快的磁性女声歌曲，中文，主题：难忘周末`
+
+### 定制模式
+适合有完整歌词创意的创作：
+1. 设置歌曲标题和风格标签
+2. 输入完整歌词内容
+3. 支持[Verse]、[Chorus]等结构标记
+4. 可选择不同的Chirp模型版本
+
+### 续写模式
+在现有音乐基础上继续创作：
+1. 提供原音乐的任务ID和片段ID
+2. 设置续写起始时间点
+3. 输入要续写的歌词内容
+4. 可以扩展音乐长度或添加新段落
+
+## 🔧 API说明
+
+### SUNO音乐生成API
+- `POST /api/suno` - 提交音乐生成任务
+- `POST /api/suno/status` - 查询生成状态
+- `GET /api/suno/audio/[clipId]` - 获取音频下载链接
+
+### 请求示例
+
+```javascript
+// 生成音乐
+const response = await fetch('/api/suno', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    mode: 'custom',
+    title: '我的歌曲',
+    prompt: '[Verse]\\n歌词内容...',
+    tags: 'pop,upbeat',
+    mv: 'chirp-v3-0'
+  })
+})
+
+// 查询状态
+const statusResponse = await fetch('/api/suno/status', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    task_id: 'your-task-id'
+  })
+})
+```
+
+## 🎨 技术栈
+
+- **框架**: Next.js 14 (Pages Router)
+- **UI库**: React 18
+- **样式**: Tailwind CSS + 自定义CSS
+- **图标**: Lucide React
+- **动画**: Framer Motion
+- **类型检查**: TypeScript
+- **数据存储**: LocalStorage (可扩展为Supabase)
+- **API**: SUNO AI via API Core
+
+## 🔗 相关链接
+
+- [SUNO AI官网](https://suno.ai/)
+- [API Core文档](https://api.apicore.ai/)
+- [Next.js文档](https://nextjs.org/docs)
+- [Tailwind CSS文档](https://tailwindcss.com/docs)
+
+## 📄 许可证
+
+本项目仅供学习和个人使用。SUNO AI服务需要遵循其官方使用条款。
+
+## 🤝 贡献
+
+欢迎提交Issue和Pull Request来改进这个项目！
+
+## 📞 联系方式
+
+如有问题或建议，请联系：[your-email@example.com]
+
 ---
-title: "文章标题"
-date: "2024-01-01"
-excerpt: "文章摘要"
-tags: ["标签1", "标签2"]
-category: "分类"
----
 
-# 文章内容
-
-这里是文章的正文内容...
-```
-
-## 构建和部署
-
-### 构建生产版本
-
-```bash
-npm run build
-```
-
-### 启动生产服务器
-
-```bash
-npm start
-```
-
-### 部署到 Vercel
-
-1. 将代码推送到 GitHub
-2. 在 [Vercel](https://vercel.com) 中导入项目
-3. 自动部署完成
-
-## 自定义配置
-
-### 修改网站信息
-
-编辑以下文件来自定义网站信息：
-
-- `components/Layout.tsx` - 网站标题和导航
-- `pages/about.tsx` - 关于页面内容
-- `pages/index.tsx` - 首页介绍文字
-
-### 添加新页面
-
-在 `pages/` 目录下创建新的 `.tsx` 文件即可自动生成路由。
-
-## 许可证
-
-MIT License
-
-## 联系方式
-
-如有问题或建议，欢迎联系：
-
-- 邮箱：alex@example.com
-- GitHub：github.com/alex
+⭐ 如果这个项目对你有帮助，请给它一个星星！
