@@ -210,6 +210,3 @@ class Database {
 
 // 导出数据库实例
 export const db = new Database()
-
-// 导出类型
-export type { Music, User }

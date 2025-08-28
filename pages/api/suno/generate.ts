@@ -83,8 +83,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         'Content-Type': 'application/json',
         'User-Agent': 'SunoMusicGenerator/1.0'
       },
-      body: JSON.stringify(requestBody),
-      timeout: 30000 // 30秒超时
+      body: JSON.stringify(requestBody)
     })
 
     if (!response.ok) {
