@@ -24,7 +24,8 @@ export default async function handler(
       continue_clip_id,
       continue_at,
       project_id,
-      user_id
+      user_id,
+      make_instrumental
     } = req.body
 
     console.log('🎵 SUNO音乐生成请求:', {
@@ -33,18 +34,35 @@ export default async function handler(
       tags,
       mv,
       project_id,
-      user_id
+      user_id,
+      make_instrumental
     })
 
+    // 紧急修复：在处理前先清理可能的污染
+    let cleanedPrompt = prompt
+    let cleanedGptPrompt = gpt_description_prompt
+
+    if (cleanedPrompt && cleanedPrompt.includes('节奏感强的电子舞曲')) {
+      console.log('🚨 在prompt中检测到电子舞曲污染，正在清理...')
+      cleanedPrompt = cleanedPrompt.replace(/.*节奏感强的电子舞曲[^:]*[:：]\s*/, '')
+      console.log('🧹 清理后的prompt:', cleanedPrompt)
+    }
+
+    if (cleanedGptPrompt && cleanedGptPrompt.includes('节奏感强的电子舞曲')) {
+      console.log('🚨 在gpt_description_prompt中检测到电子舞曲污染，正在清理...')
+      cleanedGptPrompt = cleanedGptPrompt.replace(/.*节奏感强的电子舞曲[^:]*[:：]\s*/, '')
+      console.log('🧹 清理后的gpt_description_prompt:', cleanedGptPrompt)
+    }
+
     // 验证必需参数
-    if (mode === "inspiration" && !gpt_description_prompt) {
+    if (mode === "inspiration" && !cleanedGptPrompt) {
       return res.status(400).json({
         success: false,
         error: "灵感模式需要gpt_description_prompt参数"
       })
     }
 
-    if ((mode === "custom" || mode === "continue") && !prompt) {
+    if ((mode === "custom" || mode === "continue") && !cleanedPrompt) {
       return res.status(400).json({
         success: false,
         error: "定制模式和续写模式需要prompt参数"
@@ -58,21 +76,21 @@ export default async function handler(
       })
     }
 
-    // 构建API请求数据 - 按照官方API格式
+    // 构建API请求数据 - 按照官方API格式，使用清理后的数据
     let apiData: any = {}
 
     switch (mode) {
       case "inspiration":
         apiData = {
           mode,
-          gpt_description_prompt
+          gpt_description_prompt: cleanedGptPrompt
         }
         break
       
       case "custom":
         apiData = {
           mode,
-          prompt,
+          prompt: cleanedPrompt,
           tags: tags || "pop",
           title: title || "Untitled",
           mv: mv || "chirp-v3-0"
@@ -82,7 +100,7 @@ export default async function handler(
       case "continue":
         apiData = {
           mode,
-          prompt,
+          prompt: cleanedPrompt,
           tags: tags || "pop", 
           title: title || "Untitled",
           mv: mv || "chirp-v3-0",
@@ -94,7 +112,7 @@ export default async function handler(
     }
 
     // 检查是否需要生成纯音乐（从请求体中获取）
-    if (req.body.make_instrumental) {
+    if (make_instrumental) {
       console.log('🎼 检测到纯音乐请求，开始优化...')
       console.log('🔍 优化前的数据:', JSON.stringify(apiData, null, 2))
       
