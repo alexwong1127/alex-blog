@@ -122,7 +122,9 @@ export default function MusicLibrary({ tracks, onRefresh }: MusicLibraryProps) {
                   
                   <div className="track-meta">
                     <span className="track-mode">模式: {track.mode === 'inspiration' ? '灵感模式' : track.mode === 'custom' ? '定制模式' : '续写模式'}</span>
-                    <span className="track-style">风格: {track.style || '未指定'}</span>
+                    <span className="track-style">
+                      风格: {track.style === 'instrumental' ? '纯音乐' : track.style || '未指定'}
+                    </span>
                     <span className="track-duration">时长: {formatDuration(track.duration)}</span>
                   </div>
 

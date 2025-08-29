@@ -5,7 +5,7 @@ export type MusicMode = 'inspiration' | 'custom' | 'continuation';
 export type MusicStyle = 
   | 'pop' | 'rock' | 'jazz' | 'classical' | 'electronic' 
   | 'hiphop' | 'country' | 'folk' | 'blues' | 'reggae'
-  | 'punk' | 'metal' | 'indie' | 'ambient' | 'trap';
+  | 'punk' | 'metal' | 'indie' | 'ambient' | 'trap' | 'instrumental';
 
 // 音乐作品接口
 export interface MusicTrack {

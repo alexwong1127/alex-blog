@@ -60,7 +60,7 @@ export default function Home() {
       id: generateId(),
       title: '',
       description: params.prompt,
-      style: params.style || 'pop',
+      style: params.style || (params.make_instrumental ? 'instrumental' : 'pop'),
       mode: params.mode,
       duration: params.duration || 120,
       prompt: params.prompt,
