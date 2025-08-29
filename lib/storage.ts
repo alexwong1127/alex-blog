@@ -78,6 +78,8 @@ export async function generateMusic(params: {
 }> {
   try {
     console.log('🎵 调用SUNO音乐生成API:', params);
+    console.log('🔍 原始输入提示词:', params.prompt);
+    console.log('🎼 纯音乐模式:', params.make_instrumental ? '是' : '否');
     
     // 根据模式构建正确的请求参数
     let requestBody: any = {

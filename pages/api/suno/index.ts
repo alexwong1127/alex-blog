@@ -95,9 +95,14 @@ export default async function handler(
 
     // 检查是否需要生成纯音乐（从请求体中获取）
     if (req.body.make_instrumental) {
+      console.log('🎼 检测到纯音乐请求，开始优化...')
+      console.log('🔍 优化前的数据:', JSON.stringify(apiData, null, 2))
+      
       apiData.make_instrumental = true
       // 在发送SUNO请求前优化
       const optimizedData = optimizeSunoForInstrumental(apiData)
+      
+      console.log('✨ 优化后的数据:', JSON.stringify(optimizedData, null, 2))
       apiData = optimizedData
     }
 
