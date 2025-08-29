@@ -28,7 +28,8 @@ const musicStyles: { id: MusicStyle; name: string }[] = [
 const quickPrompts = [
   '欢快的磁性女声歌曲，中文，主题：难忘周末',
   '深情的男声抒情歌曲，英文，主题：思念故乡',
-  '节奏感强的电子舞曲，英文，主题：夜晚派对'
+  '节奏感强的电子舞曲，英文，主题：夜晚派对',
+  '纯音乐，白噪音，治愈，植物，自然，流水声，自然乐器'
 ]
 
 export default function MusicGenerator({ onGenerate, isGenerating }: MusicGeneratorProps) {
