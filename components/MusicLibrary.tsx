@@ -110,7 +110,7 @@ export default function MusicLibrary({ tracks, onRefresh }: MusicLibraryProps) {
                 <div className="track-info">
                   <div className="track-title-row">
                     <h3 className="track-title">
-                      {track.title || `节奏感强的电子舞曲，英文，主题：${track.prompt.substring(0, 20)}...`}
+                      {track.title || `AI生成音乐 - ${track.prompt.substring(0, 30)}...`}
                     </h3>
                     <div 
                       className="track-status"

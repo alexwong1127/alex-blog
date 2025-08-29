@@ -100,15 +100,6 @@ export class SunoInstrumentalOptimizer {
 
     let prompt = data.gpt_description_prompt
 
-    // 紧急修复：移除可能错误拼接的电子舞曲前缀
-    if (prompt.includes('节奏感强的电子舞曲')) {
-      console.log('🚨 检测到电子舞曲前缀污染，正在清理...')
-      // 提取冒号后的内容，去掉电子舞曲部分
-      const cleanPrompt = prompt.replace(/.*节奏感强的电子舞曲[^:]*[:：]\s*/, '')
-      prompt = cleanPrompt
-      console.log('🧹 清理后的提示词:', `"${prompt}"`)
-    }
-
     // 移除人声相关词汇
     if (this.options.removeVocalKeywords) {
       const beforeClean = prompt

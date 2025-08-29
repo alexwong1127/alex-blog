@@ -38,31 +38,15 @@ export default async function handler(
       make_instrumental
     })
 
-    // 紧急修复：在处理前先清理可能的污染
-    let cleanedPrompt = prompt
-    let cleanedGptPrompt = gpt_description_prompt
-
-    if (cleanedPrompt && cleanedPrompt.includes('节奏感强的电子舞曲')) {
-      console.log('🚨 在prompt中检测到电子舞曲污染，正在清理...')
-      cleanedPrompt = cleanedPrompt.replace(/.*节奏感强的电子舞曲[^:]*[:：]\s*/, '')
-      console.log('🧹 清理后的prompt:', cleanedPrompt)
-    }
-
-    if (cleanedGptPrompt && cleanedGptPrompt.includes('节奏感强的电子舞曲')) {
-      console.log('🚨 在gpt_description_prompt中检测到电子舞曲污染，正在清理...')
-      cleanedGptPrompt = cleanedGptPrompt.replace(/.*节奏感强的电子舞曲[^:]*[:：]\s*/, '')
-      console.log('🧹 清理后的gpt_description_prompt:', cleanedGptPrompt)
-    }
-
     // 验证必需参数
-    if (mode === "inspiration" && !cleanedGptPrompt) {
+    if (mode === "inspiration" && !gpt_description_prompt) {
       return res.status(400).json({
         success: false,
         error: "灵感模式需要gpt_description_prompt参数"
       })
     }
 
-    if ((mode === "custom" || mode === "continue") && !cleanedPrompt) {
+    if ((mode === "custom" || mode === "continue") && !prompt) {
       return res.status(400).json({
         success: false,
         error: "定制模式和续写模式需要prompt参数"
@@ -76,21 +60,21 @@ export default async function handler(
       })
     }
 
-    // 构建API请求数据 - 按照官方API格式，使用清理后的数据
+    // 构建API请求数据 - 按照官方API格式
     let apiData: any = {}
 
     switch (mode) {
       case "inspiration":
         apiData = {
           mode,
-          gpt_description_prompt: cleanedGptPrompt
+          gpt_description_prompt
         }
         break
       
       case "custom":
         apiData = {
           mode,
-          prompt: cleanedPrompt,
+          prompt,
           tags: tags || "pop",
           title: title || "Untitled",
           mv: mv || "chirp-v3-0"
@@ -100,7 +84,7 @@ export default async function handler(
       case "continue":
         apiData = {
           mode,
-          prompt: cleanedPrompt,
+          prompt,
           tags: tags || "pop", 
           title: title || "Untitled",
           mv: mv || "chirp-v3-0",
