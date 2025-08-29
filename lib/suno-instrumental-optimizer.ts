@@ -95,19 +95,27 @@ export class SunoInstrumentalOptimizer {
   private optimizeInspirationMode(data: SunoRequestData): void {
     if (!data.gpt_description_prompt) return
 
+    console.log('🔍 灵感模式优化开始...')
+    console.log('📝 原始提示词:', `"${data.gpt_description_prompt}"`)
+
     let prompt = data.gpt_description_prompt
 
     // 移除人声相关词汇
     if (this.options.removeVocalKeywords) {
+      const beforeClean = prompt
       prompt = this.removeVocalKeywords(prompt)
+      console.log('🧹 清理人声词汇:', `"${beforeClean}" → "${prompt}"`)
     }
 
     // 强化纯音乐提示
     if (this.options.strengthenInstrumentalPrompt) {
+      const beforeStrengthen = prompt
       prompt = this.strengthenInstrumentalPrompt(prompt)
+      console.log('💪 强化纯音乐提示:', `"${beforeStrengthen}" → "${prompt}"`)
     }
 
     data.gpt_description_prompt = prompt
+    console.log('✨ 灵感模式优化完成，最终结果:', `"${prompt}"`)
   }
 
   /**

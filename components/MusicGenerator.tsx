@@ -42,6 +42,11 @@ export default function MusicGenerator({ onGenerate, isGenerating }: MusicGenera
   const handleGenerate = () => {
     if (!prompt.trim()) return
 
+    console.log('🚀 准备生成音乐...')
+    console.log('📝 当前输入框内容:', `"${prompt}"`)
+    console.log('🎵 选择的模式:', selectedMode)
+    console.log('🎼 纯音乐选项:', makeInstrumental)
+
     const params: GenerationParams = {
       mode: selectedMode,
       prompt: prompt.trim(),
@@ -50,11 +55,16 @@ export default function MusicGenerator({ onGenerate, isGenerating }: MusicGenera
       make_instrumental: selectedMode === 'inspiration' ? makeInstrumental : undefined
     }
 
+    console.log('📦 生成参数:', params)
+
     onGenerate(params)
   }
 
   const handleQuickPrompt = (quickPrompt: string) => {
+    console.log('🎯 点击快速提示:', quickPrompt)
+    console.log('🔄 设置前的prompt值:', prompt)
     setPrompt(quickPrompt)
+    console.log('✅ 快速提示已设置到输入框')
   }
 
   return (
