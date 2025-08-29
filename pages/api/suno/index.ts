@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { optimizeSunoForInstrumental } from '../../../lib/suno-instrumental-optimizer'
 
 // 暂时使用简单的本地存储，不依赖数据库
 const musicStorage: any[] = []
@@ -63,12 +64,14 @@ export default async function handler(
     switch (mode) {
       case "inspiration":
         apiData = {
+          mode,
           gpt_description_prompt
         }
         break
       
       case "custom":
         apiData = {
+          mode,
           prompt,
           tags: tags || "pop",
           title: title || "Untitled",
@@ -78,6 +81,7 @@ export default async function handler(
       
       case "continue":
         apiData = {
+          mode,
           prompt,
           tags: tags || "pop", 
           title: title || "Untitled",
@@ -87,6 +91,14 @@ export default async function handler(
           continue_at
         }
         break
+    }
+
+    // 检查是否需要生成纯音乐（从请求体中获取）
+    if (req.body.make_instrumental) {
+      apiData.make_instrumental = true
+      // 在发送SUNO请求前优化
+      const optimizedData = optimizeSunoForInstrumental(apiData)
+      apiData = optimizedData
     }
 
     console.log('📤 发送到SUNO API:', apiData)
