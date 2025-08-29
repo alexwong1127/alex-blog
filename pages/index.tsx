@@ -81,7 +81,8 @@ export default function Home() {
         style: params.style,
         duration: params.duration,
         mode: params.mode,
-        title: params.title
+        title: params.title,
+        make_instrumental: params.make_instrumental
       })
 
       if (result.success && result.taskId) {

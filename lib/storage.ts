@@ -68,6 +68,7 @@ export async function generateMusic(params: {
   duration?: number;
   mode?: string;
   title?: string;
+  make_instrumental?: boolean;
 }): Promise<{ 
   success: boolean; 
   taskId?: string;
@@ -81,6 +82,7 @@ export async function generateMusic(params: {
     // 根据模式构建正确的请求参数
     let requestBody: any = {
       mode: params.mode || 'custom',
+      make_instrumental: params.make_instrumental || false
     };
 
     if (params.mode === 'inspiration') {
